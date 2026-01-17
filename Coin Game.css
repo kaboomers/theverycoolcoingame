@@ -1,0 +1,306 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    height: 100vh;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- 遊戲主容器 --- */
+#game-wrapper {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: filter 0.3s ease;
+}
+
+body.modal-open #game-wrapper {
+    filter: blur(8px) brightness(0.4);
+    pointer-events: none;
+}
+
+canvas#gameCanvas {
+    background-color: #000;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* --- 遊戲內 UI --- */
+#ui-layer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    pointer-events: none;
+    display: flex;
+    gap: 20px;
+}
+
+.stat-box {
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.4);
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.coin-icon { color: #ffcc00; }
+.buff-icon { font-size: 20px; }
+
+/* 設定按鈕 (右上角) */
+#settings-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+#settings-btn:hover {
+    background-color: #ffcc00;
+    color: #000;
+    border-color: #ffcc00;
+}
+
+.controls-hint {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    pointer-events: none;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Game Over 畫面 */
+#game-over-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.95);
+    border: 2px solid #555;
+    border-radius: 20px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+#game-over-screen h1 {
+    color: #ff4444;
+    font-size: 42px;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#game-over-screen .score-text {
+    font-size: 20px;
+    color: #ddd;
+    margin-bottom: 5px;
+}
+
+#game-over-screen .earnings-text {
+    font-size: 18px;
+    color: #ffcc00;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.btn-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+#game-over-screen button {
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    transition: transform 0.1s;
+    width: auto;
+}
+
+#game-over-screen button:hover {
+    transform: scale(1.05);
+    background-color: #ffd633;
+    box-shadow: none;
+}
+
+/* --- Modal 通用 --- */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90vw;
+}
+
+body.modal-open .modal.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: all;
+}
+
+#settings-modal { display: flex; gap: 30px; }
+#shop-modal { width: 600px; display: flex; flex-direction: column; min-height: 500px; }
+
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 15px;
+}
+.shop-header h2 { margin: 0; color: #fff; }
+.shop-balance { font-size: 20px; color: #ffcc00; font-weight: bold; }
+
+/* 商店導航 */
+.shop-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.shop-tab {
+    flex: 1;
+    padding: 10px;
+    background: #333;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+.shop-tab:hover { background: #444; color: #fff; }
+.shop-tab.active { background: #ffcc00; color: #000; }
+
+/* 內容區域 */
+.shop-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.hidden { display: none !important; }
+
+/* 造型 Grid */
+.skin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* 升級列表 */
+.upgrade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.upgrade-card {
+    background: #333;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #444;
+}
+.upgrade-info h3 { margin: 0 0 5px 0; color: #ffcc00; font-size: 18px; }
+.upgrade-info p { margin: 0; color: #ccc; font-size: 14px; }
+.upgrade-btn {
+    background: #444;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 100px;
+}
+.upgrade-btn.can-buy { background: #ffcc00; color: black; }
+.upgrade-btn.maxed { background: #555; color: #888; cursor: default; }
+
+/* Skin Card Styles */
+.skin-card {
+    background: #333;
+    border: 2px solid #444;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.skin-card:hover { background: #3a3a3a; border-color: #666; }
+.skin-card.owned { border-color: #555; }
+.skin-card.equipped { border-color: #ffcc00; background: rgba(255, 204, 0, 0.1); }
+.skin-preview { width: 50px; height: 50px; margin-bottom: 10px; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+.skin-info { text-align: center; }
+.skin-name { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px; }
+.skin-price { font-size: 13px; color: #aaa; }
+.skin-price.affordable { color: #8f8; }
+.skin-status { font-size: 12px; font-weight: bold; margin-top: 5px; color: #ffcc00; }
+
+.modal-actions { margin-top: auto; text-align: right; display: flex; justify-content: flex-end; gap: 10px; padding-top: 20px;}
+.close-btn { background-color: #ffcc00; color: #000; border: none; padding: 10px 25px; border-radius: 5px; font-weight: bold; font-size: 16px; cursor: pointer; transition: transform 0.1s; }
+
+/* Settings Styles */
+.preview-section { width: 280px; display: flex; flex-direction: column; gap: 10px; }
+.preview-box { background-color: #000; border: 2px solid #555; border-radius: 8px; height: 250px; position: relative; }
+.preview-label { position: absolute; top: 10px; left: 10px; font-size: 12px; color: #888; background-color: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; pointer-events: none; }
+canvas#previewCanvas { width: 100%; height: 100%; display: block; }
+.controls-section { width: 300px; display: flex; flex-direction: column; justify-content: space-between; }
+.controls-header h2 { margin: 0 0 20px 0; color: #ffcc00; border-bottom: 2px solid #555; padding-bottom: 10px; }
+.preset-group { display: flex; gap: 10px; margin-bottom: 25px; }
+.preset-btn { flex: 1; background-color: #333; border: 1px solid #555; color: #ccc; padding: 8px 0; border-radius: 5px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+.preset-btn.active { background-color: #ffcc00; color: #000; border-color: #ffcc00; font-weight: bold; }
+.slider-group { margin-bottom: 20px; }
+.slider-group label { display: flex; justify-content: space-between; margin-bottom: 8px; color: #ddd; }
+.slider-group span { color: #ffcc00; font-family: monospace; }
+input[type=range] { width: 100%; accent-color: #ffcc00; cursor: pointer; }
+.test-jump-btn { background-color: #444; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+.test-jump-btn:hover { background-color: #555; }

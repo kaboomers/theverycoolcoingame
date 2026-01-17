@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>太空捕手 - 物理實驗室</title>
+    <link rel="stylesheet" href="Coin Game.css">
+</head>
+<body>
+
+<!-- 遊戲層 -->
+<div id="game-wrapper">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
+    <div id="ui-layer">
+        <div class="stat-box" id="score-display">Score: 0</div>
+        <div class="stat-box" id="wallet-display"><span class="coin-icon">💰</span> <span id="wallet-amount">0</span></div>
+        <div class="stat-box" id="multiplier-display" style="font-size: 18px; color: #aaa;">x1.0</div>
+        <div class="stat-box hidden" id="shield-display" style="color: #00FFFF;">🛡️ ACTIVE</div>
+    </div>
+
+    <!-- 設定按鈕 -->
+    <button id="settings-btn" onclick="toggleSettings()">⚙️ 設定</button>
+
+    <div class="controls-hint">
+        空白鍵跳躍 ␣ | 左右鍵移動 ← →
+    </div>
+
+    <div id="game-over-screen">
+        <h1>GAME OVER</h1>
+        <div class="score-text">本局分數: <span id="final-score">0</span></div>
+        <div class="earnings-text">+ <span id="earned-coins">0</span> 金幣 (x<span id="end-mult">1.0</span>)</div>
+        
+        <div class="btn-group">
+            <button onclick="resetGame()">再玩一次</button>
+            <button onclick="openShop()">🛒 商店</button>
+        </div>
+    </div>
+</div>
+
+<!-- 設定面板 -->
+<div id="settings-modal" class="modal">
+    <div class="preview-section">
+        <div class="preview-box">
+            <div class="preview-label">JUMP PREVIEW</div>
+            <canvas id="previewCanvas" width="280" height="250"></canvas>
+        </div>
+        <button id="preview-trigger-btn" class="test-jump-btn">試跳 (Test Jump)</button>
+    </div>
+
+    <div class="controls-section">
+        <div class="controls-header">
+            <h2>物理參數</h2>
+            <div style="font-size: 14px; color: #aaa; margin-bottom: 10px;">快速預設:</div>
+            <div class="preset-group">
+                <button class="preset-btn" onclick="applyPreset('easy')">Easy</button>
+                <button class="preset-btn active" onclick="applyPreset('medium')">Medium</button>
+                <button class="preset-btn" onclick="applyPreset('hard')">Hard</button>
+            </div>
+            <div class="slider-group">
+                <label>重力: <span id="grav-val">0.5</span></label>
+                <input type="range" id="gravity-slider" min="0.1" max="1.5" step="0.1" value="0.5">
+            </div>
+            <div class="slider-group">
+                <label>跳躍力: <span id="jump-val">15</span></label>
+                <input type="range" id="jump-slider" min="5" max="30" step="1" value="15">
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="close-btn" onclick="toggleSettings()">返回</button>
+        </div>
+    </div>
+</div>
+
+<!-- 商店面板 -->
+<div id="shop-modal" class="modal">
+    <div class="shop-header">
+        <h2>道具商店</h2>
+        <div class="shop-balance">💰 <span id="shop-wallet">0</span></div>
+    </div>
+
+    <div class="shop-nav">
+        <button class="shop-tab active" onclick="switchShopTab('skins')">造型 (Skins)</button>
+        <button class="shop-tab" onclick="switchShopTab('upgrades')">升級 (Upgrades)</button>
+    </div>
+
+    <!-- 造型分頁 -->
+    <div id="tab-skins" class="shop-content">
+        <div class="skin-grid" id="skin-container"></div>
+    </div>
+
+    <!-- 升級分頁 -->
+    <div id="tab-upgrades" class="shop-content hidden">
+        <div class="upgrade-list" id="upgrade-container"></div>
+    </div>
+
+    <div class="modal-actions">
+        <button class="close-btn" onclick="closeShop()">關閉 (Close)</button>
+    </div>
+</div>
+
+<script src="Coin Game.js"></script>
+</body>
+</html>
