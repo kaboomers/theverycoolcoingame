@@ -69,13 +69,17 @@ classDiagram
         +open_shop()
         +open_settings()
     }
+
+    class GameLoop {
+        <<Main Loop>>
+    }
     
-    ResourceManager "1" --* "GameLoop" : Assets
-    Player "1" --* "GameLoop" : Controlled Entity
-    FallingItem "*" --* "GameLoop" : Obstacles & Coins
-    Particle "*" --* "GameLoop" : VFX
-    UI -- "GameLoop" : Interface
-    GameVariables -- "GameLoop" : State
+    ResourceManager --* GameLoop : Assets
+    Player --* GameLoop : Controlled
+    FallingItem --* GameLoop : Obstacles
+    Particle --* GameLoop : VFX
+    UI -- GameLoop : Interface
+    GameVariables -- GameLoop : State
 
     note for FallingItem "Types: gold_coin, silver_coin, fake, magnet, shield"
 ```
