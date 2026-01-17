@@ -17,6 +17,13 @@ A dynamic coin collection game built with Python and Pygame. Collect gold and si
 *   **Settings**: Adjust game physics (Gravity and Jump Force) in real-time.
 *   **Visuals**: animated coin sprites, trail effects, and dynamic particle explosions.
 
+## Downloads
+
+*   🐍 **[Python Version (Script)](PYTHON/Coin_Game.py)**
+    *   *Note: Ensure the `assets/` folder is in the same directory as the script when running.*
+*   🌐 **[Web Version (HTML/CSS/JS Zip)](Coin_Game_Web.zip)**
+    *   *Contains `Coin Game.html`, `Coin Game.css`, and `Coin Game.js`.*
+
 ## Architecture
 
 The game is structured around a main loop managing different states (Playing, Shop, Settings, Game Over).
